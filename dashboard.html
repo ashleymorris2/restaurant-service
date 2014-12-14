@@ -17,11 +17,17 @@
     <div class="container-fluid ">
         <div class="navbar-header">
             <a href="#" class="navbar-brand">Go Eat</a>
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" >
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+
+            <div id="buttons">
+                <a href="#menu-toggle" role="button" class="btn btn-default navbar-btn" id="menu-toggle">
+                    <span class="glyphicon glyphicon-align-justify"></span>
+                </a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -33,25 +39,17 @@
         </div>
     </div>
 </nav>
-
 <!-- /#wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
-                <a href="#">
-                    Start Bootstrap
-                </a>
+                <a href="#">Start Bootstrap</a>
             </li>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Shortcuts</a></li>
-            <li><a href="#">Overview</a></li>
-            <li><a href="#">Events</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
+            <li class="active"><a href="#">Overview</a></li>
+            <li><a href="scripts/add-item.php">Add Menu Item</a></li>
+</ul>
     </div>
 
     <!-- /#sidebar-wrapper -->
@@ -61,25 +59,30 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Simple Sidebar</h1>
-                    <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                    <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    <h1>Restaurant Overview</h1>
+
+                    <p>This page will be used by the waiting staff to see the status of the tables and orders in real-time
+                        which customers need serving etc</p>
+
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
+
+
+<!--Footer stuff, jquery import. Speeds page loading if at the bottom.-->
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="js/bootstrap.js"></script>
 
 <!-- Menu Toggle Script -->
 <script>
-    $("#menu-toggle").click(function(e) {
+    $("#menu-toggle").click(function (e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
 </script>
-
 </body>

@@ -12,11 +12,18 @@
         //the form was submitted by the user
 
         //The initial insert query without the parameters, protection from SQL injection
-        $query = "INSERT INTO menu (name, price, description, category, stock)
-                        VALUES (:name, :price, :description, :category, :stock)";
+        $query = "UPDATE menu
+                  SET
+                  name = :name,
+                  price = :price,
+                  description = :description,
+                  category = :category,
+                  stock = :stock
+                  WHERE item_id = :id";
 
         /*Query_params is an array that contains all the parameters for the SQL statement.
          it gets the parameters from the HTML post request that is sent with the webform.*/
+        $query_params[":id"] = $_POST['item_id'];
         $query_params[':name'] = $_POST['item_name'];
         $query_params[':price'] = $_POST['item_price'];
         $query_params[':description'] = $_POST['item_description'];
@@ -26,24 +33,28 @@
         //Validate information here and redirect to form if necessary
 
         //1: Check for null data entry.
-        if(empty($query_params[":name"])){
-            $error = "Item name must be entered";
-        }
-        else if(empty($query_params[":price"])){
-            $error = "Item price must be entered";
-        }
-        else if(empty($query_params[":description"])){
-            $error = "Item description must be entered";
-        }
-        else if(empty($query_params[":category"])){
-            $error = "Item category must be entered";
-        }
-        else if(empty($query_params[":stock"])){
-            $error = "Item stock must be entered";
+        if (empty($query_params[":name"])) {
+            $error = "Item name must be entered.";
+        } else {
+            if (empty($query_params[":price"])) {
+                $error = "Item price must be entered.";
+            } else {
+                if (empty($query_params[":description"])) {
+                    $error = "Item description must be entered";
+                } else {
+                    if (empty($query_params[":category"])) {
+                        $error = "Item category must be entered.";
+                    } else {
+                        if (empty($query_params[":stock"])) {
+                            $error = "Item stock must be entered.";
+                        }
+                    }
+                }
+            }
         }
 
-        if(isset($error)){
-            header("Location: add-item.php?e=" . urlencode($error));
+        if (isset($error)) {
+            header("Location: ../edit-item.php?e=" . urlencode($error) . "&id=" . urlencode($query_params[':id']));
             exit;
         }
 
@@ -60,18 +71,17 @@
         catch (PDOException $ex) {
             //Error variable to be passed back via URL and read at the other end.
             $error = "Database error, could not submit";
-            header("Location: add-item.php?e=" . urlencode($error));
+            header("Location: ../edit-item.php?e=" . urlencode($error) . "&id=" . urlencode($query_params[':id']));
             exit;
         }
 
-        $success = "{$query_params[':name']} has been added to the menu successfully";
-        header("Location: add-item.php?s=" . urlencode($success));
+        $success = "{$query_params[':name']}, has been updated successfully.";
+        header("Location: ../edit-item.php?s=" . urlencode($success) . "&id=" . urlencode($query_params[':id']));
         exit;
-    }
+    } else {
 
-    else {
         //If navigated to this page with out pushing the submit button then redirect
-        header("Location: add-item.php");
+        header("Location: ../menu.php");
         exit;
     }
 ?>

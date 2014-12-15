@@ -108,7 +108,7 @@
                         <div class="form-group">
                             <label for="item_description" class="col-sm-2 control-label">Description:</label>
                             <div class="col-md-4">
-                                <textarea class="form-control" rows="5" name="item_description" placeholder="Description"></textarea>
+                                <textarea class="form-control" rows="5" name="item_description" placeholder="Descriptive text for the item."></textarea>
                             </div>
                         </div>
                         <div class="form-group">

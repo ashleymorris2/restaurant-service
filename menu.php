@@ -14,7 +14,7 @@
     //Opens the get-menu file and reads the echoed JSON using output buffering.
     ob_start(); // begin collecting output
 
-    include 'get-menu-script.php';
+    include 'scripts/get-menu-script.php';
 
     $json = ob_get_clean(); // retrieve output from get-menu-script.php, stops buffering
 
@@ -95,6 +95,7 @@
                                         <td><?php echo $item['description']; ?></td>
                                         <td><?php echo $item['category']; ?></td>
                                         <td><?php echo $item['stock']; ?></td>
+                                        <!--Adds the item id to the URL: -->
                                         <td><a href="edit-item.php?id=<?php echo $item['item_id']; ?>" type="button"
                                                class="btn btn-default">Edit</a></td>
                                         <td>
@@ -104,20 +105,23 @@
                                 <?php
                                 }
                             } //There has been an error or no data returned: output the sent message.
-                            else {
-                                if ($response['success'] == 0) {
+                            else if ($response['success'] == 0)  {
                                     ?>
-                                    <div class="alert alert-success alert-dismissable" role="alert">
+                                    <div class="alert alert-danger alert-dismissable" role="alert">
                                         <button type="button" class="close" data-dismiss="alert"><span
                                                 aria-hidden="true">&times;</span>
-                                            <span class="sr-only">Close</span></button>
+                                            <span class="sr-only">Close</span></button><?php
+                                            /*Outputs the error message that was sent
+                                            with the response.*/
+                                            echo $response['message'];
 
-                                        <?php echo $response['message'] /*Outputs the error message that was sent
-                                        with the response.*/
+                                            if (empty ($response['message'])) {
+                                                //Database connection has failed;
+                                                echo "Failed to connect to the database";
+                                            }
                                         ?>
                                     </div>
                                 <?php
-                                }
                             }
                         ?>
                         </tbody>

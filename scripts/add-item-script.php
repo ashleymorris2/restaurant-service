@@ -42,8 +42,9 @@
             $error = "Item stock must be entered";
         }
 
+        //Check if an error has been set. If so redirect back to the form with the error message.
         if(isset($error)){
-            header("Location: add-item.php?e=" . urlencode($error));
+            header("Location: ../add-item.php?e=" . urlencode($error));
             exit;
         }
 
@@ -60,7 +61,7 @@
         catch (PDOException $ex) {
             //Error variable to be passed back via URL and read at the other end.
             $error = "Database error, could not submit";
-            header("Location: add-item.php?e=" . urlencode($error));
+            header("Location: ../add-item.php?e=" . urlencode($error));
             exit;
         }
 
@@ -71,7 +72,7 @@
 
     else {
         //If navigated to this page with out pushing the submit button then redirect
-        header("Location: add-item.php");
+        header("Location: ../add-item.php");
         exit;
     }
 ?>

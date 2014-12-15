@@ -90,7 +90,7 @@
 
                     <br>
 
-                    <form class="form-horizontal" method="POST" role="form" action="add-item-script.php">
+                    <form class="form-horizontal" method="POST" role="form" action="scripts/add-item-script.php">
                         <div class="form-group">
                             <label for="item_name" class="col-sm-2 control-label">Item Name:</label>
 
@@ -107,10 +107,8 @@
                         </div>
                         <div class="form-group">
                             <label for="item_description" class="col-sm-2 control-label">Description:</label>
-
                             <div class="col-md-4">
-                                <textarea class="form-control" rows="5" name="item_description" placeholder="Description">
-                                    </textarea>
+                                <textarea class="form-control" rows="5" name="item_description" placeholder="Description"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -129,7 +127,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" name="submit" class="btn btn-primary">Add Item</button>
+                                <button type="submit" name="submit" class="btn btn-success">Add Item</button>
                             </div>
                     </form>
                 </div>

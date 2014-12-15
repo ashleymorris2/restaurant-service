@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Add Item</title>
 
-    <link href="../css/simple-sidebar.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link href="jumbotron.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/custom.css">
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/jumbotron.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/custom.css">
 </head>
 
 <body>
@@ -31,24 +31,26 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="../index.htm">Home</a></li>
-                <li class="active"><a href="../dashboard.html">Dashboard</a></li>
+                <li><a href="index.htm">Home</a></li>
+                <li class="active"><a href="dashboard.html">Dashboard</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
         </div>
     </div>
 </nav>
+
 <!-- /#wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li class="sidebar-brand">
-                <a href="#">Start Bootstrap</a>
+                <a href="#">Admin Panel</a>
             </li>
-            <li><a href="#">Overview</a></li>
+            <li><a href="dashboard.html">Overview</a></li>
             <li class="active"><a href="add-item.php">Add Menu Item</a></li>
+            <li><a href="menu.php">View Menu</a></li>
         </ul>
     </div>
 
@@ -60,12 +62,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1>Add Menu Item</h1>
-
                     <?php
                         //Checks http 'GET' to see if variables 'e' or 's' have been set.
                         if (isset($_GET['s'])) {
                             ?>
-                            <!--Add a positive alert that is dismissable-->
+                            <!--Add a positive alert that is dismissible-->
                             <div class="alert alert-success alert-dismissable" role="alert">
                                 <button type="button" class="close" data-dismiss="alert"><span
                                         aria-hidden="true">&times;</span>
@@ -76,7 +77,10 @@
                         } else {
                             if (isset($_GET['e'])) {
                                 ?>
-                                <div class="alert alert-danger" role="alert">
+                                <div class="alert alert-danger alert-dismissable" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert"><span
+                                            aria-hidden="true">&times;</span>
+                                        <span class="sr-only">Close</span></button>
                                     <strong>Error: </strong><?php echo $_GET['e']; ?>
                                 </div>
                             <?php
@@ -86,7 +90,7 @@
 
                     <br>
 
-                    <form class="form-horizontal" method="POST" role="form" action="../add-item-submission.php">
+                    <form class="form-horizontal" method="POST" role="form" action="add-item-script.php">
                         <div class="form-group">
                             <label for="item_name" class="col-sm-2 control-label">Item Name:</label>
 
@@ -137,7 +141,7 @@
 
 <!--Footer stuff, jquery import. Speeds page loading if at the bottom.-->
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="../js/bootstrap.js"></script>
+<script src="js/bootstrap.js"></script>
 
 <!-- Menu Toggle Script -->
 <script>

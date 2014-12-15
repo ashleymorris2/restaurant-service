@@ -1,87 +1,147 @@
-<head>
-    <h1>View Menu</h1>
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/jumbotron.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/custom.css">
 </head>
 <?php
-    /**
-     * Created by PhpStorm.
-     * User: Ashley Morris
-     * Date: 04/12/2014
-     * Time: 00:00
-     *
-        menu.php will get a list of all the items that are currently in the database.
-        Will create a separate script that will sync the mySql database with an android
-        SQLlite one so that the user only has to download the menu data once.
-        This second script will send JSON data.
+    //Opens the get-menu file and reads the echoed JSON using output buffering.
+    ob_start(); // begin collecting output
 
-     */
+    include 'get-menu-script.php';
 
-    //connect to the database
-    require("config.inc.php");
+    $json = ob_get_clean(); // retrieve output from get-menu-script.php, stops buffering
 
-    //the initial query (select all from menu order by category)
-    $query = "SELECT *FROM menu ORDER BY category, price ASC";
-
-    //Execute the query
-    try {
-        $stmt = $db->prepare($query);
-        $result = $stmt->execute();
-    }
-    catch (PDOException $ex) {
-        $response['success'] = 0;
-        $response['message'] = "Error connecting to the database";
-        json_encode($response);
-    }
-
-    //Use fetch all to retrieve all the found rows into an array
-    $rows = $stmt->fetchAll();
-
-
-    //If the query has returned any results then we will put it into an array and parse into JSON and out put via html
-    if ($rows) {
-        $response['success'] = 1;
-        $response['message'] = "Connected successfully";
-
-        //says that the key 'items' is an array.
-        $response['items'] = array();
-        ?>
-
-        <table>
-            <?php
-                /*
-                 * For every loop iteration, the value of the current array element ($rows) is
-                 * assigned to $row and the array pointer is moved by one,
-                 * until it reaches the last array element.
-                 */
-                foreach ($rows as $row) {
-                    $item = array();
-
-                    $item['item_id'] = $row['item_id'];
-                    $item['name'] = $row['name'];
-                    $item['price'] = $row['price'];
-                    $item['description'] = $row['description'];
-                    $item['category'] = $row['category'];
-                    $item['stock'] = $row['stock'];
-                    ?>
-
-                    <tr>
-                        <td> <?php echo $item['item_id']; ?></td>
-                        <td> <?php echo $item['name']; ?></td>
-                        <td> £<?php echo $item['price']; ?></td>
-                        <td> <?php echo $item['description']; ?></td>
-                        <td> <?php echo $item['category']; ?></td>
-                    </tr>
-
-                    <?php
-                    //update our response with json data, pushes this post onto the posts array.
-                    array_push($response['items'], $item);
-                }
-            ?>
-        </table>
-        <?php
-        echo(json_encode($response['items']));
-    }
-    else {
-        echo "No data was found";
-    }
-
+    //Decodes the json back into an associative array.
+    $response = json_decode($json, true);
 ?>
+<body>
+<!-- navigation bar set up -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid ">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">Go Eat</a>
+
+            <div id="buttons">
+                <a href="#menu-toggle" role="button" class="btn btn-default navbar-btn" id="menu-toggle">
+                    <span class="glyphicon glyphicon-align-justify"></span>
+                </a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="index.htm">Home</a></li>
+                <li class="active"><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- /#wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">Admin Panel</a>
+            </li>
+            <li><a href="dashboard.html">Overview</a></li>
+            <li><a href="add-item.php">Add Menu Item</a></li>
+            <li class="active"><a href="menu.php">View Menu</a></li>
+        </ul>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper" style="padding: 60px">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>View Menu</h1>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Stock</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            $item = array();
+                            if ($response['success'] == 1) {
+                                //Iterate over every item in the item array of response
+                                foreach ($response['items'] as $item) {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $item['item_id']; ?></td>
+                                        <td><?php echo $item['name']; ?></td>
+                                        <td>£<?php echo $item['price']; ?></td>
+                                        <td><?php echo $item['description']; ?></td>
+                                        <td><?php echo $item['category']; ?></td>
+                                        <td><?php echo $item['stock']; ?></td>
+                                        <td><a href="edit-item.php?id=<?php echo $item['item_id']; ?>" type="button"
+                                               class="btn btn-default">Edit</a></td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+                                <?php
+                                }
+                            } //There has been an error or no data returned: output the sent message.
+                            else {
+                                if ($response['success'] == 0) {
+                                    ?>
+                                    <div class="alert alert-success alert-dismissable" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert"><span
+                                                aria-hidden="true">&times;</span>
+                                            <span class="sr-only">Close</span></button>
+
+                                        <?php echo $response['message'] /*Outputs the error message that was sent
+                                        with the response.*/
+                                        ?>
+                                    </div>
+                                <?php
+                                }
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Footer stuff, jquery import. Speeds page loading if at the bottom.-->
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+
+
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function (e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+</body>

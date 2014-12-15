@@ -25,6 +25,29 @@
 
         //Validate information here and redirect to form if necessary
 
+        //1: Check for null data entry.
+        if(empty($query_params[":name"])){
+            $error = "Item name must be entered";
+        }
+        else if(empty($query_params[":price"])){
+            $error = "Item price must be entered";
+        }
+        else if(empty($query_params[":description"])){
+            $error = "Item description must be entered";
+        }
+        else if(empty($query_params[":category"])){
+            $error = "Item category must be entered";
+        }
+        else if(empty($query_params[":stock"])){
+            $error = "Item stock must be entered";
+        }
+
+        if(isset($error)){
+            header("Location: add-item.php?e=" . urlencode($error));
+            exit;
+        }
+
+        //Made it this far then try to insert the data:
         try {
             //try to execute the query.
 
@@ -37,18 +60,18 @@
         catch (PDOException $ex) {
             //Error variable to be passed back via URL and read at the other end.
             $error = "Database error, could not submit";
-            header("Location: scripts/add-item.php?e=" . urldecode($error));
+            header("Location: add-item.php?e=" . urlencode($error));
             exit;
         }
 
         $success = "{$query_params[':name']} has been added to the menu successfully";
-        header("Location: scripts/add-item.php?s=" . urldecode($success));
+        header("Location: add-item.php?s=" . urlencode($success));
         exit;
     }
 
     else {
         //If navigated to this page with out pushing the submit button then redirect
-        header("Location: scripts/add-item.php");
+        header("Location: add-item.php");
         exit;
     }
 ?>

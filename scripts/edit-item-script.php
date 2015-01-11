@@ -5,7 +5,7 @@
      * Date: 04/12/2014
      * Time: 11:52
      */
-    //Adds a single item to the menu database. This will be only on the restaurant side of things so no android required.
+    //Edits a single item in the menu database. This will be only on the restaurant side of things so no android required.
     require("config.inc.php");
 
     if (isset($_POST['submit'])) {
@@ -35,22 +35,15 @@
         //1: Check for null data entry.
         if (empty($query_params[":name"])) {
             $error = "Item name must be entered.";
-        } else {
-            if (empty($query_params[":price"])) {
-                $error = "Item price must be entered.";
-            } else {
-                if (empty($query_params[":description"])) {
-                    $error = "Item description must be entered";
-                } else {
-                    if (empty($query_params[":category"])) {
-                        $error = "Item category must be entered.";
-                    } else {
-                        if (empty($query_params[":stock"])) {
-                            $error = "Item stock must be entered.";
-                        }
-                    }
-                }
-            }
+        }
+        else if (empty($query_params[":price"])){
+            $error = "Item price must be entered.";
+        }
+        else if (empty($query_params[":category"])) {
+            $error = "Item category must be entered.";
+        }
+        else if (empty($query_params[":stock"])) {
+            $error = "Item stock must be entered.";
         }
 
         if (isset($error)) {

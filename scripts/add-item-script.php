@@ -32,9 +32,6 @@
         else if(empty($query_params[":price"])){
             $error = "Item price must be entered";
         }
-        else if(empty($query_params[":description"])){
-            $error = "Item description must be entered";
-        }
         else if(empty($query_params[":category"])){
             $error = "Item category must be entered";
         }
@@ -59,14 +56,14 @@
             $result = $stmt->execute($query_params);
         }
         catch (PDOException $ex) {
-            //Error variable to be passed back via URL and read at the other end.
-            $error = "Database error, could not submit";
+            //Error variable to be passed back via URL and read at the other end. Remove "$ex->get" message in release.
+            $error = "Database error, could not submit. Reason: (". $ex->getMessage(). ")";
             header("Location: ../add-item.php?e=" . urlencode($error));
             exit;
         }
 
         $success = "{$query_params[':name']} has been added to the menu successfully";
-        header("Location: add-item.php?s=" . urlencode($success));
+        header("Location: ../add-item.php?s=" . urlencode($success));
         exit;
     }
 

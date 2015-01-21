@@ -13,8 +13,8 @@
         //If http post isn't empty then continue:
 
         /**If either the password or username is empty when the form is submitted
-            then kill the page with an error message. Using die isn't best practice. Will do a front end form validation,
-            on the android app. This backend is just a double check.
+            then kill the page with an error message. Will do a front end form validation,
+            on the android app as well. This backend is just a double check.
          **/
         if(empty($_POST['username']) || empty($_POST['password'])){
 
@@ -37,7 +37,6 @@
             $result = $stmt->execute($query_params);
         }
         catch(PDOException $sex){
-
             $response['success'] = 0;
             $response['message'] = "Database error, please try again";
             die(json_encode($response));
@@ -51,7 +50,8 @@
             die(json_encode($response));
         }
 
-        //Clear to try and create a new user at this point.
+        //It's clear to try and create a new user at this point.=======
+
         $raw_password = $_POST['password'];
 
         //Hash the password using MD5, not the most secure method (able to brute force) but better than nothing.
@@ -69,7 +69,7 @@
         catch(PDOException $ex){
             //Error has occurred, kill with an error message.
             $response['success'] = 0;
-            $response['message'] = "Database error. Error registering new user, try again.";
+            $response['message'] = "Database error: ".$ex->getMessage()." Error registering new user, try again.";
             die(json_encode($response));
         }
 
@@ -77,14 +77,6 @@
         $response['success'] = 1;
         $response['message'] = "Registration successful";
         echo(json_encode($response));
-
-
-
-
-
-
-
-
 
     }
 ?>

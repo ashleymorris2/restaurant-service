@@ -32,7 +32,7 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="index.htm">Home</a></li>
-                <li class="active"><a href="dashboard.html">Dashboard</a></li>
+                <li class="active"><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
@@ -48,9 +48,10 @@
             <li class="sidebar-brand">
                 <a href="#">Admin Panel</a>
             </li>
-            <li><a href="dashboard.html">Overview</a></li>
+            <li><a href="dashboard.php">Overview</a></li>
             <li class="active"><a href="add-item.php">Add Menu Item</a></li>
             <li><a href="menu.php">View Menu</a></li>
+            <li><a href="edit-tables.php">Edit Tables</a></li>
         </ul>
     </div>
 

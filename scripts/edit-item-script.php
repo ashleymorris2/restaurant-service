@@ -46,6 +46,7 @@
             $error = "Item stock must be entered.";
         }
 
+        //If the error variable is set then relocate back to this page with an error message.
         if (isset($error)) {
             header("Location: ../edit-item.php?e=" . urlencode($error) . "&id=" . urlencode($query_params[':id']));
             exit;
@@ -60,6 +61,7 @@
 
             //execute the query with the parameters
             $result = $stmt->execute($query_params);
+
         }
         catch (PDOException $ex) {
             //Error variable to be passed back via URL and read at the other end.

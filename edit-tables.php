@@ -3,37 +3,24 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit Item</title>
+    <title>Dashboard</title>
 
     <link href="css/simple-sidebar.css" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/jumbotron.css" rel="stylesheet">
     <link rel="stylesheet" href="css/custom.css">
 </head>
-
 <?php
     //Opens the get-menu file and reads the echoed JSON using output buffering.
     ob_start(); // begin collecting output
 
-    $query_params[":id"] = $_GET['id'];
-
-    //included scripts are in the current scope, so it gets access to $query_params.
-    include 'scripts/get-item-script.php';
+    include 'scripts/get-tables.php';
 
     $json = ob_get_clean(); // retrieve output from get-menu-script.php, stops buffering
 
     //Decodes the json back into an associative array.
     $response = json_decode($json, true);
-
-    $item = array();
-
-    //Check to see if the table query has returned anything.
-
-    if (isset ($response['item'])) {
-        $item = $response['item'];
-    }
 ?>
-
 <body>
 <!-- navigation bar set up -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -74,26 +61,20 @@
             <li><a href="dashboard.php">Overview</a></li>
             <li><a href="add-item.php">Add Menu Item</a></li>
             <li><a href="menu.php">View Menu</a></li>
+            <li class="active"><a href="edit-tables.php">Edit Tables</a></li>
         </ul>
     </div>
-
-    <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
     <div id="page-content-wrapper" style="padding: 60px">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12">
-                    <h1>Edit Menu Item
-                        <small>ID:
-                            <?php if (isset ($item['item_id'])) {
-                                echo $item['item_id'];
-                            }
-                            ?> </small>
-                    </h1>
+                <div class="col-lg-9">
+                    <h1>Edit Tables</h1>
+
+                    <!-- Success and error message checking: -->
                     <?php
                         //Checks http 'GET' to see if variables 'e' or 's' have been set.
-                        //S is success, e is error.
                         if (isset($_GET['s'])) {
                             ?>
                             <!--Add a positive alert that is dismissible-->
@@ -101,8 +82,7 @@
                                 <button type="button" class="close" data-dismiss="alert"><span
                                         aria-hidden="true">&times;</span>
                                     <span class="sr-only">Close</span></button>
-                                <?php echo $_GET['s']; ?><br> <a href="menu.php" class="alert-link">Click here to return
-                                    to the menu.</a>
+                                <?php echo $_GET['s']; ?>
                             </div>
                         <?php
                         } else {
@@ -119,75 +99,78 @@
                         }
                     ?>
 
+                    <!-- Striped table: -->
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Table Number</th>
+                            <th>Operations</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            $table = array();
+                            //If the response code 'success' is 1 then there is data to work with
+                            if ($response['success'] == 1) {
+                                //Iterate over every item in the item array of response
+                                foreach ($response['tables'] as $table) {
+                                    ?>
+                        <tr>
+                            <td><?php echo $table['table_number']; ?></td>
+                            <!--Adds the item id to the URL: -->
+                            <td><a href="scripts/generate_QR.php?table_number=<?php echo $table['table_number']; ?>"
+                                   type="button" class="btn btn-default">Generate QR Code</a>
+                                <button type="button" class="btn btn-danger">Delete</button></td>
+                        </tr>
+                        <?php
+                                }
+                            } //There has been an error or no data returned: output the sent message.
+                            else if ($response['success'] == 0)  {
+                                    ?>
+                        <div class="alert alert-danger alert-dismissable" role="alert">
+                            <button type="button" class="close" data-dismiss="alert"><span
+                                    aria-hidden="true">&times;</span>
+                                <span class="sr-only">Close</span></button><?php
+                                            /*Outputs the error message that was sent
+                                            with the response.*/
+                                            echo $response['message'];
+
+                                            if (empty ($response['message'])) {
+                                                //Database connection has failed;
+                                                echo "Table is empty";
+                                            }
+                                        ?>
+                        </div>
+                        <?php
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+
                     <br>
 
-                    <?php if (isset ($item['item_id'])) {
-                        /*Checks if the item_id has been set, if not then the item hasn't been found so don't display
-                        the table */
-                        ?>
-                        <form class="form-horizontal" method="POST" role="form" action="scripts/edit-item-script.php">
+                    <!--Add a new table form: -->
+                    <fieldset>
+                        <legend>Add Table</legend>
+
+                        <form class="form-horizontal" method="POST" role="form" action="scripts/add-table-script.php">
                             <div class="form-group">
-                                <label for="item_name" class="col-sm-2 control-label">Item Name:</label>
 
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="item_name"
-                                           value="<?php echo $item['name'] ?>">
+                                    <input type="submit" name="submit" class="btn btn-success" value="Add" style="float: right"/>
+
+                                    <div style="overflow: hidden; padding-right: .5em;">
+                                        <input type="text" class="form-control" name="table_number"
+                                               placeholder="Table Number" style="width: 100%;"/>
+                                    </div>
+                                    ​
                                 </div>
+
                             </div>
+                    </fieldset>
+                    </form>
 
-                            <div class="form-group">
-                                <label for="item_price" class="col-sm-2 control-label">Item Price:</label>
-
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" name="item_price"
-                                           value="<?php echo $item['price'] ?> ">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="item_description" class="col-sm-2 control-label">Description:</label>
-
-                                <div class="col-md-4">
-                                    <textarea class="form-control" rows="5"
-                                              name="item_description"><?php echo $item['description'] ?></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="item_category" class="col-sm-2 control-label">Category:</label>
-
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" name="item_category"
-                                           value="<?php echo $item['category'] ?>">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="item_stock" class="col-sm-2 control-label">Stock:</label>
-
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" name="item_stock"
-                                           value="<?php echo $item['stock']; ?>">
-                                </div>
-                            </div>
-
-                            <input type="hidden" name="item_id" value="<?php echo $item['item_id']; ?>">
-
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" name="submit" class="btn btn-success">Done</button>
-                                    <a href="menu.php" class="btn btn-danger">Discard</a>
-                                </div>
-                        </form>
-                    <?php
-                    } else {
-                        if (!isset($_GET['s']) || !isset($_GET['e']))
-                        //This means that we haven't returned to this page from the edit-item-script.
-                        {
-                            ?>
-                            <div class="alert alert-danger" role="alert">The item wasn't found.</div> <?php
-                        }
-                    } ?>
                 </div>
             </div>
         </div>
@@ -198,6 +181,10 @@
 <!--Footer stuff, jquery import. Speeds page loading if at the bottom.-->
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="js/bootstrap.js"></script>
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+
 
 <!-- Menu Toggle Script -->
 <script>

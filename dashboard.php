@@ -73,8 +73,22 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Ordering System</h1>
+                    <h1>Ordering System
 
+                        <a href="dashboard.php" type="button" class="btn btn-default">
+
+                            <div id="countdown">
+                                <div id="minutes" style="float:left">00</div>
+                                <div style="float:left">:</div>
+                                <div id="seconds" style="float:left">00</div>
+                            </div>
+                            <div id="aftercount" style="display:none">Reload
+                            </div>
+                        </a>
+
+                    </h1>
+
+                    <BR>
 
                     <!-- Striped table: -->
                     <table class="table table-striped">
@@ -100,44 +114,42 @@
                                         <td><?php echo $table['customer_id']; ?></td>
                                         <td><?php echo $table['status']; ?></td>
                                         <!--Adds the item id to the URL: -->
-                                        <td> <button type="button" class="btn btn-default">Mark as in use</button>
-                                            <button type="button" class="btn btn-danger">Delete</button></td>
+                                        <td>
+                                            <button type="button" class="btn btn-default">Mark as in use</button>
+                                            <button type="button" class="btn btn-danger">Delete</button>
+                                        </td>
                                     </tr>
                                 <?php
                                 }
                             } //There has been an error or no data returned: output the sent message.
-                            else if ($response['success'] == 0)  {
-                                ?>
-                                <div class="alert alert-danger alert-dismissable" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert"><span
-                                            aria-hidden="true">&times;</span>
-                                        <span class="sr-only">Close</span></button><?php
-                                        /*Outputs the error message that was sent
-                                        with the response.*/
-                                        echo $response['message'];
-
-                                        if (empty ($response['message'])) {
-                                            //Database connection has failed;
-                                            echo "Table is empty";
-                                        }
+                            else {
+                                if ($response['success'] == 0) {
                                     ?>
-                                </div>
-                            <?php
+                                    <div class="alert alert-danger alert-dismissable" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert"><span
+                                                aria-hidden="true">&times;</span>
+                                            <span class="sr-only">Close</span></button><?php
+                                            /*Outputs the error message that was sent
+                                            with the response.*/
+                                            echo $response['message'];
+
+                                            if (empty ($response['message'])) {
+                                                //Database connection has failed;
+                                                echo "Table is empty";
+                                            }
+                                        ?>
+                                    </div>
+                                <?php
+                                }
                             }
                         ?>
                         </tbody>
                     </table>
-
-
-
-
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 
 
 <!--Footer stuff, jquery import. Speeds page loading if at the bottom.-->
@@ -151,4 +163,33 @@
         $("#wrapper").toggleClass("toggled");
     });
 </script>
+
+<!--Script via, source:: http://jsfiddle.net/ysilvestrov/bUZd8/1/ -->
+<script>
+    var sTime = new Date().getTime();
+    var countDown = 15;
+
+    function UpdateTime() {
+        var cTime = new Date().getTime();
+        var diff = cTime - sTime;
+        var seconds = countDown - Math.floor(diff / 1000);
+        if (seconds >= 0) {
+            var minutes = Math.floor(seconds / 60);
+            seconds -= minutes * 60;
+            $("#minutes").text(minutes < 10 ? "0" + minutes : minutes);
+            $("#seconds").text(seconds < 10 ? "0" + seconds : seconds);
+        } else {
+            $("#countdown").hide();
+            $("#aftercount").show();
+
+            //Reloads the current page from the server and not the cache
+            location.reload(true);
+            clearInterval(counter);
+        }
+    }
+    UpdateTime();
+    var counter = setInterval(UpdateTime, 500);
+</script>
+
+
 </body>

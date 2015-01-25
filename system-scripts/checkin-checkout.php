@@ -20,13 +20,12 @@
          * The user is checking into the system so update the records accordingly.
          */
 
-        if($_POST['method'] = "check_in") {
+        if($_POST['method'] == "check_in") {
 
             //Check for status code 0 else die with error:
             $query = "SELECT status_code FROM resturant_tables WHERE table_number = :table_number";
-
-
             $query_params[':table_number'] = $_POST['table_number'];
+
             try{
                 $stmt = $db->prepare($query);
                 $result = $stmt->execute($query_params);
@@ -50,7 +49,6 @@
                 //Kill page and not execute any more code.
                 die(json_encode($response));
             }
-
 
             //At this point free to continue
             //Give it the table number and the customer id
@@ -84,9 +82,41 @@
         }
 
 
-        else if ($_POST['button_pressed'] = "check_out") {
+        /**
+         * Checks a user out from the restaurant.
+         *
+         * Clears (not deletes) a single row in the mysql database. Set it all back to the initial values.
+         */
+        else if ($_POST['method'] == "check_out") {
 
+            //At this point free to continue
+            //Give it the table number and the customer id
 
+            $query = "UPDATE resturant_tables
+                  SET customer_id = NULL,
+                  status = NULL,
+                  status_code = 0
+                  WHERE table_number = :table_number";
+
+            $query_params[':table_number'] = $_POST['table_number'];
+
+            try{
+                $stmt = $db->prepare($query);
+                $result = $stmt->execute($query_params);
+            }
+            catch(PDOException $ex){
+                $response['success'] = 0;
+                $response['message'] = "Database error: " .$ex->getMessage();
+
+                //Kill page and not execute any more code.
+                die(json_encode($response));
+            }
+
+            $response['success'] = 1;
+            $response['message'] = "Checked out successfully";
+
+            //Kill page and not execute any more code.
+            die(json_encode($response));
         }
 
     }

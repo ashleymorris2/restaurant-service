@@ -14,6 +14,12 @@
     if(isset($_POST['submit'])){
         //The form was user submitted
 
+        if($_POST['table_number'] == 0){
+            $error = "The table number has to be greater than 0.";
+            header("Location: ../edit-tables.php?e=" . urlencode($error));
+            exit;
+        }
+
         //Check to see if the table already exists:
         $query = "SELECT 1 FROM resturant_tables WHERE table_number = :table_number";
 
@@ -38,7 +44,6 @@
             header("Location: ../edit-tables.php?e=" . urlencode($error));
             exit;
         }
-
 
         //Clear to proceed:
         $query = "INSERT INTO resturant_tables (table_number, customer_id, status) VALUES (:table_number, NULL, NULL)";

@@ -74,6 +74,7 @@
                 die(json_encode($response));
             }
 
+
             $response['success'] = 1;
             $response['message'] = "Checked in successfully";
 

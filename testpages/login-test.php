@@ -1,6 +1,6 @@
 <h1>Login</h1>
 
-<form action="../scripts/login-script.php" method="post">
+<form action="../scripts/authentication/login.php" method="post">
 
     Username:<br/>
 

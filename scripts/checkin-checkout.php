@@ -12,7 +12,7 @@
      *
      */
 
-    require("../scripts/config.inc.php");
+    require("config.inc.php");
 
     if(!empty($_POST)){
 

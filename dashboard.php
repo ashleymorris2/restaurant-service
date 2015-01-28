@@ -14,7 +14,7 @@
     //Opens the get-menu file and reads the echoed JSON using output buffering.
     ob_start(); // begin collecting output
 
-    include 'scripts/get-tables.php';
+    include 'scripts/get-tables-script.php';
 
     $json = ob_get_clean(); // retrieve output from get-menu-script.php, stops buffering
 

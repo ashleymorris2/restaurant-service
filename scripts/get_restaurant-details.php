@@ -34,7 +34,6 @@
         $response['success'] = 1;
         $response['message'] = "Connected successfully";
 
-
         $restaurant['name'] = $row['name'];
         $restaurant['address'] = $row['address'];
         $restaurant['phone_number'] = $row['phone_number'];

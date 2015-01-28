@@ -20,7 +20,7 @@
     //included scripts are in the current scope, so it gets access to $query_params.
     include 'scripts/get-item-script.php';
 
-    $json = ob_get_clean(); // retrieve output from get-menu-script.php, stops buffering
+    $json = ob_get_clean(); // retrieve output from get-menu.php, stops buffering
 
     //Decodes the json back into an associative array.
     $response = json_decode($json, true);
@@ -74,6 +74,7 @@
             <li><a href="dashboard.php">Overview</a></li>
             <li><a href="add-item.php">Add Menu Item</a></li>
             <li><a href="menu.php">View Menu</a></li>
+            <li><a href="edit-tables.php">Edit Tables</a></li>
         </ul>
     </div>
 

@@ -10,11 +10,11 @@
  *
  */
     //Connection script
-    require("../config.inc.php");
+    require("config.inc.php");
 
     if(!empty($_POST)){
 
-        $query = "SELECT * FROM menu WHERE category = :category";
+        $query = "SELECT * FROM menu WHERE category = :category ORDER BY price ASC";
         $query_params[':category'] = $_POST['category'];
 
         try{
@@ -43,7 +43,9 @@
                 $item['name'] = $row['name'];
                 $item['price'] = $row['price'];
                 $item['description'] = $row['description'];
-                $item["stock"] = $row['stock'];
+
+                //Only the system needs to know about the stock or itemID, will return an error if user tries to
+                //buy something that isn't in stock.
 
                 array_push($response['items'], $item);
             }

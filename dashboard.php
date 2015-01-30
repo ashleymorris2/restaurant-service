@@ -116,7 +116,7 @@
                                         <!--Adds the item id to the URL: -->
                                         <td>
                                             <button type="button" class="btn btn-default">Mark as in use</button>
-                                            <button type="button" class="btn btn-danger">Delete</button>
+                                            <button type="button" class="btn btn-danger">Clear</button>
                                         </td>
                                     </tr>
                                 <?php

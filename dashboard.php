@@ -110,17 +110,49 @@
                                 foreach ($response['tables'] as $table) {
                                     ?>
                                     <tr>
-                                        <td><?php echo $table['table_number']; ?></td>
-                                        <td><?php echo $table['customer_id']; ?></td>
-                                        <td><?php echo $table['status']; ?></td>
-                                        <!--Adds the item id to the URL: -->
-                                        <td>
-                                            <button type="button" class="btn btn-default">Mark as in use</button>
-                                            <button type="button" class="btn btn-danger">Clear</button>
-                                        </td>
-                                    </tr>
-                                <?php
-                                }
+                                    <td><?php echo $table['table_number']; ?></td>
+                                    <td><?php echo $table['customer_id']; ?></td>
+                                    <td><?php echo $table['status']; ?></td>
+                                    <td><?php
+
+                                    if ($table['status_code'] == 0) {
+                                        //Empty table
+                                        ?>
+                                        <button type="button" class="btn btn-default">Set as in use</button>
+                                    <?php
+                                    }
+
+                                    if ($table['status_code'] == 1) {
+                                        //Customer checked in
+                                        ?>
+                                        <button type="button" class="btn btn-danger">Clear table</button>
+                                    <?php
+                                    }
+
+                                    if ($table['status_code'] == 2) {
+                                        //Order placed (awaiting pay)
+                                        ?>
+                                        <button type="button" class="btn btn-default">View order</button>
+                                        <button type="button" class="btn btn-default">Set as dispatched</button>
+                                    <?php
+                                    }
+
+                                    if ($table['status_code'] == 3) {
+                                        //Order placed (recieved pay)
+                                        ?>
+                                        <button type="button" class="btn btn-default">View order</button>
+                                        <button type="button" class="btn btn-default">Set as dispatched</button>
+                                    <?php
+                                    }
+
+
+
+
+                                }?>
+
+                                </td>
+                                </tr>
+                            <?php
                             } //There has been an error or no data returned: output the sent message.
                             else {
                                 if ($response['success'] == 0) {

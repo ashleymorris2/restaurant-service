@@ -21,10 +21,8 @@
 
     require("config.inc.php");
 
-
     //Was user submitted via http post.
     if (isset($_POST)) {
-
 
         //Order placement query
         $query = "INSERT INTO orders (customer_id, items_info, order_total,
@@ -74,6 +72,6 @@
 
         //Finally the user has been added successfully, display a success message for the user.
         $response['success'] = 1;
-        $response['message'] = "Your order has been place successfully.";
+        $response['message'] = "Your order has been placed successfully.";
         echo(json_encode($response));
     }

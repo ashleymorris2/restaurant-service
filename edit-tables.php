@@ -116,22 +116,25 @@
                                 //Iterate over every item in the item array of response
                                 foreach ($response['tables'] as $table) {
                                     ?>
-                        <tr>
-                            <td><?php echo $table['table_number']; ?></td>
-                            <!--Adds the item id to the URL: -->
-                            <td><a href="scripts/generate_QR.php?table_number=<?php echo $table['table_number']; ?>"
-                                   type="button" class="btn btn-default">Generate QR Code</a>
-                                <button type="button" class="btn btn-danger">Delete</button></td>
-                        </tr>
-                        <?php
+                                    <tr>
+                                        <td><?php echo $table['table_number']; ?></td>
+                                        <!--Adds the item id to the URL: -->
+                                        <td>
+                                            <a href="scripts/generate_QR.php?table_number=<?php echo $table['table_number']; ?>"
+                                               type="button" class="btn btn-default">Generate QR Code</a>
+                                            <button type="button" class="btn btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+                                <?php
                                 }
                             } //There has been an error or no data returned: output the sent message.
-                            else if ($response['success'] == 0)  {
+                            else {
+                                if ($response['success'] == 0) {
                                     ?>
-                        <div class="alert alert-danger alert-dismissable" role="alert">
-                            <button type="button" class="close" data-dismiss="alert"><span
-                                    aria-hidden="true">&times;</span>
-                                <span class="sr-only">Close</span></button><?php
+                                    <div class="alert alert-danger alert-dismissable" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert"><span
+                                                aria-hidden="true">&times;</span>
+                                            <span class="sr-only">Close</span></button><?php
                                             /*Outputs the error message that was sent
                                             with the response.*/
                                             echo $response['message'];
@@ -141,8 +144,9 @@
                                                 echo "Table is empty";
                                             }
                                         ?>
-                        </div>
-                        <?php
+                                    </div>
+                                <?php
+                                }
                             }
                         ?>
                         </tbody>
@@ -158,7 +162,8 @@
                             <div class="form-group">
 
                                 <div class="col-md-4">
-                                    <input type="submit" name="submit" class="btn btn-success" value="Add" style="float: right"/>
+                                    <input type="submit" name="submit" class="btn btn-success" value="Add"
+                                           style="float: right"/>
 
                                     <div style="overflow: hidden; padding-right: .5em;">
                                         <input type="text" class="form-control" name="table_number"

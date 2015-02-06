@@ -10,7 +10,6 @@
 
     require("config.inc.php");
 
-
         $query = "SELECT * FROM resturant_tables ORDER BY table_number ASC";
 
         //Execute the query.
@@ -45,6 +44,8 @@
                 $table['table_number'] = $row['table_number'];
                 $table['customer_id'] = $row['customer_id'];
                 $table['status'] = $row['status'];
+                $table['status_code'] = $row['status_code'];
+
 
                 //update our response, pushes this table onto the tables array.
                 array_push($response['tables'], $table);

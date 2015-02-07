@@ -8,7 +8,7 @@
 ?>
 
 <h1>Register</h1>
-<form action="../scripts/authentication/register.php" method="post">
+<form action="../scripts/register-script.php" method="post">
     Username:<br />
     <input type="text" name="username" value="" />
     <br /><br />

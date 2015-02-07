@@ -14,7 +14,9 @@
 
     require("config.inc.php");
 
-    //Handle post requests
+    /**
+     * Handle post requests
+     * */
     if(!empty($_POST)){
 
         /**
@@ -123,7 +125,11 @@
 
     }
 
-    //Handle GET requests
+    /**
+     *
+     * HANDLE GET requests
+     *
+     * */
     else if(isset($_GET)){
 
         /**
@@ -169,7 +175,7 @@
                   WHERE table_number = :table_number";
 
             $query_params[':customer_id'] = "N/A";
-            $query_params[':status'] = "Ready to order";
+            $query_params[':status'] = "Table is in use";
             $query_params['status_code'] = 1;
 
             try{
@@ -187,8 +193,9 @@
             $response['success'] = 1;
             $response['message'] = "Checked in successfully";
 
-            //Kill page and not execute any more code.
-            die(json_encode($response));
+            //If navigated to this page with out pushing the submit button then redirect
+            header("Location: ../dashboard.php");
+            exit;
         }
 
 
@@ -225,8 +232,9 @@
             $response['success'] = 1;
             $response['message'] = "Checked out successfully";
 
-            //Kill page and not execute any more code.
-            die(json_encode($response));
+            //If navigated to this page with out pushing the submit button then redirect
+            header("Location: ../dashboard.php");
+            exit;
         }
 
     }

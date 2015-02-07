@@ -118,30 +118,34 @@
                                     if ($table['status_code'] == 0) {
                                         //Empty table
                                         ?>
-                                        <button type="button" class="btn btn-default">Set as in use</button>
+                                        <a href="scripts/checkin-checkout.php?table_number=<?php echo $table['table_number'];?>&method=check_in"
+                                           type="button" class="btn btn-default">Set as in use</a>
                                     <?php
                                     }
 
                                     if ($table['status_code'] == 1) {
                                         //Customer checked in
                                         ?>
-                                        <button type="button" class="btn btn-danger">Clear table</button>
+                                        <a href="scripts/checkin-checkout.php?table_number=<?php echo $table['table_number'];?>&method=check_out"
+                                           type="button" class="btn btn-danger">Clear table</a>
                                     <?php
                                     }
 
                                     if ($table['status_code'] == 2) {
                                         //Order placed (awaiting pay)
                                         ?>
-                                        <button type="button" class="btn btn-default">View order</button>
-                                        <button type="button" class="btn btn-default">Set as dispatched</button>
+                                        <a href="view-order.php?table_number=<?php echo $table['table_number'];?>"
+                                        type="button" class="btn btn-primary"> View order</a>
+                                        <button type="button" class="btn btn-success">Set as dispatched</button>
                                     <?php
                                     }
 
                                     if ($table['status_code'] == 3) {
                                         //Order placed (recieved pay)
                                         ?>
-                                        <button type="button" class="btn btn-default">View order</button>
-                                        <button type="button" class="btn btn-default">Set as dispatched</button>
+                                        <a href="view-order.php?table_number=<?php echo $table['table_number'];?>"
+                                           type="button" class="btn btn-primary"> View order</a>
+                                        <button type="button" class="btn btn-success">Set as dispatched</button>
                                     <?php
                                     }
 
@@ -222,6 +226,4 @@
     UpdateTime();
     var counter = setInterval(UpdateTime, 500);
 </script>
-
-
 </body>

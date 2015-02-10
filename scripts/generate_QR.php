@@ -4,6 +4,12 @@
  * User: Ashley Morris
  * Date: 19/01/2015
  * Time: 16:30
+ *
+ * Uses 3rd party library :
+ *
+ * phpqrcpde/qrlib available at phpqrcode.sourceforge.net
+ *
+ *
  */
 
     include "../../phpqrcode/qrlib.php";

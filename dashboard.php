@@ -63,6 +63,7 @@
             <li><a href="add-item.php">Add Menu Item</a></li>
             <li><a href="menu.php">View Menu</a></li>
             <li><a href=edit-tables.php>Edit Tables</a></li>
+            <li><a href="edit-restaurant.php">Edit Restaurant</a></li>
         </ul>
     </div>
 
@@ -98,7 +99,6 @@
                             <th>Customer ID</th>
                             <th>Status</th>
                             <th>Operations</th>
-
                         </tr>
                         </thead>
                         <tbody>
@@ -106,7 +106,6 @@
                             $table = array();
                             //If the response code 'success' is 1 then there is data to work with
                             if ($response['success'] == 1) {
-                                //Iterate over every item in the item array of response
                                 foreach ($response['tables'] as $table) {
                                     ?>
                                     <tr>
@@ -116,17 +115,17 @@
                                     <td><?php
 
                                     if ($table['status_code'] == 0) {
-                                        //Empty table
+                                        //Empty table, allow to be marked as in use
                                         ?>
-                                        <a href="scripts/checkin-checkout.php?table_number=<?php echo $table['table_number'];?>&method=check_in"
+                                        <a href="scripts/checkin-checkout.php?table_number=<?php echo $table['table_number']; ?>&method=check_in"
                                            type="button" class="btn btn-default">Set as in use</a>
                                     <?php
                                     }
 
-                                    if ($table['status_code'] == 1) {
-                                        //Customer checked in
+                                    if ($table['status_code'] == 1 || $table['status_code'] == 5) {
+                                        //Customer checked in, but no order. Or complete order
                                         ?>
-                                        <a href="scripts/checkin-checkout.php?table_number=<?php echo $table['table_number'];?>&method=check_out"
+                                        <a href="scripts/checkin-checkout.php?table_number=<?php echo $table['table_number']; ?>&method=check_out"
                                            type="button" class="btn btn-danger">Clear table</a>
                                     <?php
                                     }
@@ -134,25 +133,40 @@
                                     if ($table['status_code'] == 2) {
                                         //Order placed (awaiting pay)
                                         ?>
-                                        <a href="view-order.php?table_number=<?php echo $table['table_number'];?>"
-                                        type="button" class="btn btn-primary"> View order</a>
-                                        <button type="button" class="btn btn-success">Set as dispatched</button>
+                                        <a href="view-order.php?table_number=<?php echo $table['table_number']; ?>"
+                                           type="button" class="btn btn-primary"> View order</a>
+
+                                        <a href="scripts/dispatch-order-script.php?table_number=<?php echo $table['table_number']; ?>"
+                                           type="button" class="btn btn-primary">Set as dispatched</a>
+
                                     <?php
                                     }
 
                                     if ($table['status_code'] == 3) {
-                                        //Order placed (recieved pay)
+                                        //Order placed (received pay)
                                         ?>
-                                        <a href="view-order.php?table_number=<?php echo $table['table_number'];?>"
-                                           type="button" class="btn btn-primary"> View order</a>
-                                        <button type="button" class="btn btn-success">Set as dispatched</button>
+                                        <a href="view-order.php?table_number=<?php echo $table['table_number']; ?>"
+                                           type="button" class="btn btn-primary">View order</a>
+
+                                        <a href="scripts/dispatch-order-script.php?table_number=<?php echo $table['table_number']; ?>"
+                                           type="button" class="btn btn-primary">Set as dispatched</a>
                                     <?php
                                     }
 
+                                    if ($table['status_code'] == 4) {
+                                        //Order dispatched (awaiting pay)
+                                        ?>
+                                        <a href="view-order.php?table_number=<?php echo $table['table_number']; ?>"
+                                           type="button" class="btn btn-primary">View order</a>
+
+                                        <a href="view-order.php?table_number=<?php echo $table['table_number']; ?>"
+                                           type="button" class="btn btn-primary">Settle bill at table</a>
 
 
-
+                                    <?php
+                                    }
                                 }?>
+
 
                                 </td>
                                 </tr>

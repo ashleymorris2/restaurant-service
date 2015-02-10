@@ -34,15 +34,17 @@
         $response['success'] = 1;
         $response['message'] = "Connected successfully";
 
+        $restaurant["restaurant_id"] = $row['restaurant_id'];
         $restaurant['name'] = $row['name'];
         $restaurant['address'] = $row['address'];
         $restaurant['phone_number'] = $row['phone_number'];
         $restaurant['open_time'] = $row['open_time'];
         $restaurant['close_time'] = $row['close_time'];
+        $restaurant['image'] = $row['image'];
 
 
        $response['restaurant'] = $restaurant;
-        die(json_encode($response));
+        echo(json_encode($response));
     }
     else {
         $response['success'] = 0;

@@ -94,11 +94,12 @@
                                 <button type="button" class="close" data-dismiss="alert"><span
                                         aria-hidden="true">&times;</span>
                                     <span class="sr-only">Close</span></button>
-                                <?php echo $_GET['s']; ?><br> <a href="menu.php" class="alert-link">Click here to return
-                                    to the menu.</a>
+                                <strong>Success: </strong><?php echo $_GET['s']; ?>
                             </div>
                         <?php
-                        } else {
+                        }
+
+                        else {
                             if (isset($_GET['e'])) {
                                 ?>
                                 <div class="alert alert-danger alert-dismissable" role="alert">

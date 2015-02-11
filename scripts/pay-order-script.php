@@ -84,6 +84,8 @@
                 $query_params['status_code'] = 5;
             }
 
+            $query_params[':table_number'] = $_POST['table_number'];
+
             try {
                 //prepare the statement without the parameters.
                 $stmt = $db->prepare($update_query);

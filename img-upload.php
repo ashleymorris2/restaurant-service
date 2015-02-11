@@ -6,7 +6,8 @@
      * Time: 16:28
      */
 
-    require("/scripts/config.inc.php");
+    require("scripts/config.inc.php");
+
 
     //Update the image location in the restaurant database
     $query = "UPDATE restaurant
@@ -27,8 +28,10 @@
     //Gets the extension type of the file
     $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType
-        != "jpeg" && $imageFileType !="gif"){
+    //check supported type
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType
+        != "jpeg" && $imageFileType != "gif"
+    ) {
 
         $error = "Image is not of the supported type. Only JPG, JPEG, PNG and GIF allowed.";
         $uploadOk = 0;
@@ -48,45 +51,51 @@
 
     //Check if file exists
     if (file_exists($target_file)) {
-        $error = "That file already exists on the server";
+        $error = "That file already exists on the server.";
         $uploadOk = 0;
     }
 
     //Check Size
-    if($_FILES["fileToUpload"]["size"] > 3000000){
-        $error = "That file is larger than 3mb";
+    if ($_FILES["fileToUpload"]["size"] > 3000000) {
+        $error = "That file is larger than 3mb.";
         $uploadOk = 0;
     }
 
+    //Redirect with error message
+    if ($uploadOk == 0) {
+        header("Location: edit-restaurant.php?e=" . urlencode($error));
+        exit;
+    } //try to move the file from tmp
+    else {
 
-    if($uploadOk == 0){
-        die;
-    }
-    //try to move the file from tmp
-else{
-    if(move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_file)){
-        $success = "The image ". basename($_FILES['fileToUpload']['tmp_name'], $target_file) .
-            " has been uploaded";
+        $target_file = str_replace(" ", "_", $target_file);
 
-        $query_params[":directory"] = $target_file;
+        //Update database record if success
+        if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_file)) {
 
-        try {
-            //try to execute the query.
+            $query_params[":directory"] = $target_file;
 
-            //prepare the statement without the parameters.
-            $stmt = $db->prepare($query);
+            try {
+                //try to execute the query.
 
-            //execute the query with the parameters
-            $result = $stmt->execute($query_params);
+                //prepare the statement without the parameters.
+                $stmt = $db->prepare($query);
 
+                //execute the query with the parameters
+                $result = $stmt->execute($query_params);
+            }
+            catch (PDOException $ex) {
+                //Error variable to be passed back via URL and read at the other end.
+                $success = "Image upload has failed please try again.";
+            }
+
+            $success = "The image has been uploaded";
+            header("Location: edit-restaurant.php?s=" . urlencode($success));
+            exit;
+
+        } else {
+            header("Location: edit-restaurant.php");
+            exit;
         }
-        catch (PDOException $ex) {
-            //Error variable to be passed back via URL and read at the other end.
-            echo $ex->getMessage();
-        }
     }
-    else{
-        die;
-    }
-}
 

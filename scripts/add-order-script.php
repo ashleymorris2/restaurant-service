@@ -25,12 +25,13 @@
     if (isset($_POST)) {
 
         //Order placement query
-        $query = "INSERT INTO orders (customer_id, items_info, order_total,
+        $query = "INSERT INTO orders (customer_id, restaurant_name, items_info, order_total,
                   table_number, order_date, payment_status)
-                  VALUES (:customer_id, :items_info, :order_total,
+                  VALUES (:customer_id, :restaurant_name, :items_info, :order_total,
                   :table_number, :order_date, :payment_status)";
 
         $query_params[':customer_id'] = $_POST['customer_id'];
+        $query_params[':restaurant_name'] = $_POST['restaurant_name'];
         $query_params[':items_info'] = $_POST['items_info'];
         $query_params[':order_total'] = $_POST['order_total'];
         $query_params[':table_number'] = $_POST['table_number'];

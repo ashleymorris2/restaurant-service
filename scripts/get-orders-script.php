@@ -2,31 +2,21 @@
     /**
      * Created by PhpStorm.
      * User: Ashley Morris
-     * Date: 06/02/2015
-     * Time: 21:05
+     * Date: 10/02/2015
+     * Time: 20:40
      */
 
-    /**
-     *
-     * Gets orders from the orders database.
-     *
-     * Two methods in one script.
-     *
-     * The GET method only returns the most recent method by table number.
-     *
-     * The POST method returns the specified order limit by order id.
-     *
-     */
     require("config.inc.php");
 
-    //Deal with GET requests
-    if (isset($_GET)) {
+    //Deal with post requests, takes a query parameter that limits the number of returned results
+    if (isset($_POST)) {
 
-        //the initial query
-        $query = "SELECT * FROM orders WHERE table_number = :table_number
-                  ORDER BY order_date DESC LIMIT 1";
+        $return_limit = $_POST['limit'];
 
-        $query_params[':table_number'] = $_GET['table_number'];
+        $query = "SELECT * FROM orders WHERE customer_id = :customer_id
+              ORDER BY order_date DESC LIMIT $return_limit";
+
+        $query_params[':customer_id'] = $_POST["customer_id"];
 
         try {
             $stmt = $db->prepare($query);
@@ -41,36 +31,34 @@
 
         $rows = $stmt->fetchAll();
 
-        //If the query has returned any results then we will put it into an array and parse into JSON and out put via html
         if ($rows) {
-
             $response['success'] = 1;
             $response['message'] = "Connected successfully";
 
-            //says that the key 'items' is an array.
+            //Element 'orders' is an array.
+            $response['orders'] = array();
 
             foreach ($rows as $row) {
                 $order = array();
 
                 $order['order_id'] = $row['order_id'];
                 $order['customer_id'] = $row['customer_id'];
+                $order['restaurant_name'] = $row['restaurant_name'];
                 $order['order_date'] = $row['order_date'];
-                $order['items_info'] = $row['items_info'];
+                $order{'items_info'} = $row['items_info'];
+                $order['order_total'] = $row['order_total'];
                 $order['payment_status'] = $row['payment_status'];
                 $order['table_number'] = $row['table_number'];
 
-                //update our response with json data, pushes this item onto the items array.
-                $response['order'] = $order;
+
+                array_push($response['orders'], $order);
             }
 
-            echo(json_encode($response));
-        } else {
+            echo json_encode($response);
+        }
+        else {
             $response['success'] = 0;
             $response['message'] = "No data found";
-            echo(json_encode($response));
+            echo json_encode($response);
         }
     }
-    if(isset($_POST)){
-
-    }
-?>

@@ -72,7 +72,9 @@
             <li><a href="dashboard.php">Overview</a></li>
             <li><a href="add-item.php">Add Menu Item</a></li>
             <li><a href="menu.php">View Menu</a></li>
+            <li><a href="view-orders.php">View Orders</a></li>
             <li><a href="edit-tables.php">Edit Tables</a></li>
+            <li class="active"><a href="edit-restaurant.php">Edit Restaurant</a></li>
         </ul>
     </div>
 
@@ -117,12 +119,12 @@
 
                     <fieldset>
                         <legend>Restaurant Details</legend>
-                        <form class="form-horizontal" method="POST" role="form" action="scripts/edit-item-script.php">
+                        <form class="form-horizontal" method="POST" role="form" action="scripts/edit-restaurant-script.php">
                             <div class="form-group">
                                 <label for="item_name" class="col-sm-2 control-label">Name:</label>
 
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="item_name"
+                                    <input type="text" class="form-control" name="name"
                                            value="<?php echo $restaurant['name'] ?>">
                                 </div>
                             </div>
@@ -132,7 +134,7 @@
 
                                 <div class="col-md-4">
                                     <textarea class="form-control" rows="5"
-                                              name="item_description"><?php echo $restaurant['address'] ?></textarea>
+                                              name="address"><?php echo $restaurant['address'] ?></textarea>
                                 </div>
                             </div>
 
@@ -140,7 +142,7 @@
                                 <label for="item_price" class="col-sm-2 control-label">Phone Number:</label>
 
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="item_price"
+                                    <input type="text" class="form-control" name="phone_number"
                                            value="<?php echo $restaurant['phone_number'] ?> ">
                                 </div>
                             </div>
@@ -149,7 +151,7 @@
                                 <label for="item_category" class="col-sm-2 control-label">Open Time:</label>
 
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="item_category"
+                                    <input type="text" class="form-control" name="open_time"
                                            value="<?php echo $restaurant['open_time'] ?>">
                                 </div>
                             </div>
@@ -158,15 +160,14 @@
                                 <label for="item_stock" class="col-sm-2 control-label">Close Time:</label>
 
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="item_stock"
+                                    <input type="text" class="form-control" name="close_time"
                                            value="<?php echo $restaurant['close_time']; ?>">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" name="submit" class="btn btn-success">Done</button>
-                                    <a href="menu.php" class="btn btn-danger">Discard</a>
+                                    <button type="submit" name="submit" class="btn btn-success">Submit</button>
                                 </div>
                         </form>
                     </fieldset>

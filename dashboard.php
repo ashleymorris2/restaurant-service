@@ -62,6 +62,7 @@
             <li class="active"><a href="dashboard.php">Overview</a></li>
             <li><a href="add-item.php">Add Menu Item</a></li>
             <li><a href="menu.php">View Menu</a></li>
+            <li><a href="view-orders.php">View Orders</a></li>
             <li><a href=edit-tables.php>Edit Tables</a></li>
             <li><a href="edit-restaurant.php">Edit Restaurant</a></li>
         </ul>
@@ -150,6 +151,9 @@
 
                                         <a href="scripts/dispatch-order-script.php?table_number=<?php echo $table['table_number']; ?>"
                                            type="button" class="btn btn-primary">Set as dispatched</a>
+
+                                        <a href="scripts/checkin-checkout.php?table_number=<?php echo $table['table_number']; ?>&method=check_out"
+                                           type="button" class="btn btn-danger">Clear table</a>
                                     <?php
                                     }
 

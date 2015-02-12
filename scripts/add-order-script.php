@@ -24,6 +24,41 @@
     //Was user submitted via http post.
     if (isset($_POST)) {
 
+
+        //Duplicate order check. If the table is already at status 2 then a recent order has been placed.
+        //Do not duplicate.
+        $query = "SELECT status_code FROM resturant_tables WHERE table_number = :table_number";
+
+        $query_params[':table_number'] = $_POST['table_number'];
+
+        //Execute the query.
+        try {
+            $stmt = $db->prepare($query);
+            $result = $stmt->execute($query_params);
+        }
+        catch (PDOException $ex) {
+            $response['success'] = 0;
+            $response['message'] = "Error connecting to the database" . $ex->getMessage();
+            echo json_encode($response);
+        }
+
+
+        $row = $stmt->fetch();
+
+        if ($row) {
+            $current_status = $row['status_code'];
+
+            if($current_status == 2){
+
+                $response['success'] = 1;
+                $response['message'] = "Your order has been placed successfully.";
+                echo(json_encode($response));
+
+            }
+        }
+
+
+
         //Order placement query
         $query = "INSERT INTO orders (customer_id, restaurant_name, items_info, order_total,
                   table_number, order_date, payment_status)
@@ -71,7 +106,7 @@
             die (json_encode($response));
         }
 
-        //Finally the user has been added successfully, display a success message for the user.
+
         $response['success'] = 1;
         $response['message'] = "Your order has been placed successfully.";
         echo(json_encode($response));

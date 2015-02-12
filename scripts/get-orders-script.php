@@ -9,7 +9,7 @@
     require("config.inc.php");
 
     //Deal with post requests, takes a query parameter that limits the number of returned results
-    if (isset($_POST)) {
+    if (isset($_POST['limit'])) {
 
         $return_limit = $_POST['limit'];
 
@@ -50,6 +50,51 @@
                 $order['payment_status'] = $row['payment_status'];
                 $order['table_number'] = $row['table_number'];
 
+                array_push($response['orders'], $order);
+            }
+
+            echo json_encode($response);
+        }
+        else {
+            $response['success'] = 0;
+            $response['message'] = "No data found";
+            echo json_encode($response);
+        }
+    }
+    else{
+
+        $query = "SELECT * FROM orders ORDER BY order_date DESC";
+
+
+        try {
+            $stmt = $db->prepare($query);
+            $result = $stmt->execute();
+        }
+        catch (PDOException $ex) {
+            //Error variable to be passed back via URL and read at the other end.
+            $response['success'] = 0;
+            $response['message'] = "Error connecting to the database";
+            echo json_encode($response);
+        }
+
+        $rows = $stmt->fetchAll();
+
+        if ($rows) {
+            $response['success'] = 1;
+            $response['message'] = "Connected successfully";
+
+            //Element 'orders' is an array.
+            $response['orders'] = array();
+
+            foreach ($rows as $row) {
+                $order = array();
+
+                $order['order_id'] = $row['order_id'];
+                $order['customer_id'] = $row['customer_id'];
+                $order['order_date'] = $row['order_date'];
+                $order['order_total'] = $row['order_total'];
+                $order['payment_status'] = $row['payment_status'];
+                $order['table_number'] = $row['table_number'];
 
                 array_push($response['orders'], $order);
             }
@@ -61,4 +106,5 @@
             $response['message'] = "No data found";
             echo json_encode($response);
         }
+
     }

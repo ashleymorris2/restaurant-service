@@ -3,44 +3,24 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>View Order</title>
+    <title>Dashboard</title>
 
     <link href="css/simple-sidebar.css" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/jumbotron.css" rel="stylesheet">
     <link rel="stylesheet" href="css/custom.css">
 </head>
-
 <?php
     //Opens the get-menu file and reads the echoed JSON using output buffering.
     ob_start(); // begin collecting output
 
-
-    //Query params passed here are passed on to the include script
-    if(isset($_GET['id'])){
-    $query_params[":table_number"] = $_GET['id'];
-    }
-    if(isset($_GET['order_id'])){
-        $query_params[":order_id"] = $_GET['order_id'];
-    }
-
-    //included scripts are in the current scope, so it gets access to $query_params.
-    include 'scripts/get-order-script.php';
+    include 'scripts/get-orders-script.php';
 
     $json = ob_get_clean(); // retrieve output from get-menu.php, stops buffering
 
     //Decodes the json back into an associative array.
     $response = json_decode($json, true);
-
-    $item = array();
-
-    //Check to see if the table query has returned anything.
-
-    if (isset ($response['order'])) {
-        $order = $response['order'];
-    }
 ?>
-
 <body>
 <!-- navigation bar set up -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -87,69 +67,76 @@
         </ul>
     </div>
 
-    <!-- /#sidebar-wrapper -->
-
     <!-- Page Content -->
     <div id="page-content-wrapper" style="padding: 60px">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Order
-                        <small>#
-                            <?php if (isset ($order['order_id'])) {
-                                echo $order['order_id'];
-                            }
-
-                                $order_items = json_decode($order['items_info'], true);
-                                $order_total = 0;
-                                $paid = "NOT PAID";
-
-                                foreach($order_items as $item){
-                                    $order_total = $item['itemTotalCost'] + $order_total;
-                                }
-
-                                if($order['payment_status'] == 2){
-                                    $paid = "PAID";
-                                }
-
-                            ?> </small>
-                    </h1>
-
-                    <br>
-                    <h4><b>By:</b> <?php echo $order['customer_id'] ?></h4>
-                    <h4><b>Total:</b> £<?php echo number_format($order_total, 2)?></h4>
-                    <h4><b>On:</b> <?php echo date("l jS F - H:i", $order['order_date'] / 1000) ?></h4>
-                    <h4><b><?php echo $paid ?></b></h4>
-                    <br>
-
+                    <h1>View Menu</h1>
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>Item Name</th>
-                            <th>Quantity</th>
-                            <th>Total Price</th>
+                            <th>Order Number</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Payment Status</th>
+                            <th>Table Number</th>
+                            <th>Date</th>
+                            <th>Operations</th>
+
                         </tr>
                         </thead>
                         <tbody>
                         <?php
-                            $item = array();
+                            $order = array();
+                            if ($response['success'] == 1) {
 
-                            //Returns the JSON string "items_info" as an associative array
+                                $paid = "NOT PAID";
 
-                            //Iterate over every item in the item array of response
-                            foreach ($order_items as $item) {
+                                //Iterate over every item in the item array of response
+                                foreach ($response['orders'] as $order) {
+                                   if($order['payment_status'] == 2){
+                                       $paid = "PAID";
+                                   }
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $order['order_id']; ?></td>
+                                        <td><?php echo $order['customer_id']; ?></td>
+                                        <td>£<?php echo number_format($order['order_total'], 2); ?></td>
+                                        <td><?php echo $paid ?></td>
+                                        <td><?php echo $order['table_number']; ?></td>
+                                        <td><?php echo date("(D) - d/M/Y - H:i", $order['order_date'] / 1000) ?></td>
+
+                                        <td><a href="view-order.php?order_id=<?php echo $order['order_id']; ?>" type="button"
+                                               class="btn btn-default">View</a></td>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+                                <?php
+                                }
+                            } //There has been an error or no data returned: output the sent message.
+                            else if ($response['success'] == 0)  {
                                 ?>
-                                <tr>
-                                    <td><?php echo $item['itemName']; ?></td>
-                                    <td><?php echo $item['itemQuantity']; ?></td>
-                                    <td>£<?php echo number_format($item['itemTotalCost'], 2); ?></td>
-                                </tr>
+                                <div class="alert alert-danger alert-dismissable" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert"><span
+                                            aria-hidden="true">&times;</span>
+                                        <span class="sr-only">Close</span></button><?php
+                                        /*Outputs the error message that was sent
+                                        with the response.*/
+                                        echo $response['message'];
+
+                                        if (empty ($response['message'])) {
+                                            //Database connection has failed;
+                                            echo "Failed to connect to the database";
+                                        }
+                                    ?>
+                                </div>
                             <?php
                             }
                         ?>
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
@@ -161,6 +148,10 @@
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="js/bootstrap.js"></script>
 
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+
+
 <!-- Menu Toggle Script -->
 <script>
     $("#menu-toggle").click(function (e) {
@@ -168,4 +159,3 @@
         $("#wrapper").toggleClass("toggled");
     });
 </script>
-</body>

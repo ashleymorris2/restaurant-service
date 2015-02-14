@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/jumbotron.css" rel="stylesheet">
     <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -48,12 +49,12 @@
             <li class="sidebar-brand">
                 <a href="#">Admin Panel</a>
             </li>
-            <li><a href="dashboard.php">Overview</a></li>
-            <li class="active"><a href="add-item.php">Add Menu Item</a></li>
-            <li><a href="menu.php">View Menu</a></li>
-            <li><a href="view-orders.php">View Orders</a></li>
-            <li><a href="edit-tables.php">Edit Tables</a></li>
-            <li><a href="edit-restaurant.php">Edit Restaurant</a></li>
+            <li><a href="dashboard.php"><i class="fa fa-home"></i> Overview</a></li>
+            <li class="active"><a href="add-item.php"><i class="fa fa-plus-square-o"></i> Add Menu Item</a></li>
+            <li><a href="menu.php"><i class="fa fa-eye"></i> View Menu</a></li>
+            <li><a href="view-orders.php"><i class="fa fa-eye"></i> View Orders</a></li>
+            <li><a href=edit-tables.php><i class="fa fa-pencil-square-o"></i> Edit Tables</a></li>
+            <li><a href="edit-restaurant.php"><i class="fa fa-pencil-square-o"></i> Edit Restaurant</a></li>
         </ul>
     </div>
 
@@ -110,8 +111,10 @@
                         </div>
                         <div class="form-group">
                             <label for="item_description" class="col-sm-2 control-label">Description:</label>
+
                             <div class="col-md-4">
-                                <textarea class="form-control" rows="5" name="item_description" placeholder="Descriptive text for the item."></textarea>
+                                <textarea class="form-control" rows="5" name="item_description"
+                                          placeholder="Descriptive text for the item."></textarea>
                             </div>
                         </div>
                         <div class="form-group">

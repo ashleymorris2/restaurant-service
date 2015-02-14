@@ -29,16 +29,7 @@
         $query_params[':open_time'] = $_POST['open_time'];
         $query_params[':close_time'] = $_POST['close_time'];
 
-        //Validate information here and redirect to form if necessary
 
-
-
-
-        //If the error variable is set then relocate back to this page with an error message.
-        if (isset($error)) {
-            header("Location: ../edit-restaurant.php?e=" . urlencode($error));
-            exit;
-        }
 
         //Made it this far then try to insert the data:
         try {
@@ -59,7 +50,7 @@
         }
 
         $success = "{$query_params[':name']}, has been updated successfully.";
-        header("Location: ../edit-restaurant.php?e=" . urlencode($error));
+        header("Location: ../edit-restaurant.php?s=" . urlencode($success));
         exit;
     } else {
 

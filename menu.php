@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/jumbotron.css" rel="stylesheet">
     <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 <?php
     //Opens the get-menu file and reads the echoed JSON using output buffering.
@@ -58,12 +59,12 @@
             <li class="sidebar-brand">
                 <a href="#">Admin Panel</a>
             </li>
-            <li><a href="dashboard.php">Overview</a></li>
-            <li><a href="add-item.php">Add Menu Item</a></li>
-            <li class="active"><a href="menu.php">View Menu</a></li>
-            <li><a href="view-orders.php">View Orders</a></li>
-            <li><a href="edit-tables.php">Edit Tables</a></li>
-            <li><a href="edit-restaurant.php">Edit Restaurant</a></li>
+            <li><a href="dashboard.php"><i class="fa fa-home"></i> Overview</a></li>
+            <li><a href="add-item.php"><i class="fa fa-plus-square-o"></i> Add Menu Item</a></li>
+            <li class="active"><a href="menu.php"><i class="fa fa-eye"></i> View Menu</a></li>
+            <li><a href="view-orders.php"><i class="fa fa-eye"></i> View Orders</a></li>
+            <li><a href=edit-tables.php><i class="fa fa-pencil-square-o"></i> Edit Tables</a></li>
+            <li><a href="edit-restaurant.php"><i class="fa fa-pencil-square-o"></i> Edit Restaurant</a></li>
         </ul>
     </div>
 
@@ -102,13 +103,17 @@
                                         <td><a href="edit-item.php?id=<?php echo $item['item_id']; ?>" type="button"
                                                class="btn btn-default">Edit</a></td>
                                         <td>
-                                            <button type="button" class="btn btn-danger">Delete</button>
+                                            <a href="#deleteModal" data-toggle="modal"
+                                               data-id="<?php echo $item['item_id']; ?>" type="button"
+                                               class="open-deleteModal btn btn-danger">
+                                                Delete</a>
                                         </td>
                                     </tr>
                                 <?php
                                 }
                             } //There has been an error or no data returned: output the sent message.
-                            else if ($response['success'] == 0)  {
+                            else {
+                                if ($response['success'] == 0) {
                                     ?>
                                     <div class="alert alert-danger alert-dismissable" role="alert">
                                         <button type="button" class="close" data-dismiss="alert"><span
@@ -125,6 +130,7 @@
                                         ?>
                                     </div>
                                 <?php
+                                }
                             }
                         ?>
                         </tbody>
@@ -135,6 +141,29 @@
     </div>
 </div>
 
+<div id="deleteModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete that item?</p>
+
+                <form class="form-group" method="POST" role="form" action="scripts/delete-item-script.php">
+                    <input type="hidden" name="id" id="itemId" value=""/>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-danger">Yes</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!--Footer stuff, jquery import. Speeds page loading if at the bottom.-->
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -149,6 +178,13 @@
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+    });
+
+    $(document).on("click", ".open-deleteModal", function () {
+
+        var itemId = $(this).data('id');
+        $(".modal-body #itemId").val(itemId);
+
     });
 </script>
 </body>

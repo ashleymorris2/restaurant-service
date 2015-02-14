@@ -44,8 +44,8 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="index.htm">Home</a></li>
                 <li class="active"><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
     </div>
@@ -60,7 +60,7 @@
                 <a href="#">Admin Panel</a>
             </li>
 
-            <li class="active"><a href="dashboard.php"><i class="fa fa-home" ></i> Overview</a></li>
+            <li class="active"><a href="dashboard.php"><i class="fa fa-home"></i> Overview</a></li>
             <li><a href="add-item.php"><i class="fa fa-plus-square-o"></i> Add Menu Item</a></li>
             <li><a href="menu.php"><i class="fa fa-eye"></i> View Menu</a></li>
             <li><a href="view-orders.php"><i class="fa fa-eye"></i> View Orders</a></li>
@@ -144,8 +144,8 @@
                                     <?php
                                     }
 
-                                    if ($table['status_code'] == 3) {
-                                        //Order placed (received pay)
+                                    if ($table['status_code'] == 3 || $table['status_code'] == 6) {
+                                        //Order placed (received pay)/ request csh
                                         ?>
                                         <a href="view-order.php?table_number=<?php echo $table['table_number']; ?>"
                                            type="button" class="btn btn-primary">View order</a>
@@ -158,18 +158,21 @@
                                     <?php
                                     }
 
-                                    if ($table['status_code'] == 4) {
+                                    if ($table['status_code'] == 4 || $table['status_code'] == 7) {
                                         //Order dispatched (awaiting pay)
                                         ?>
                                         <a href="view-order.php?table_number=<?php echo $table['table_number']; ?>"
                                            type="button" class="btn btn-primary">View order</a>
 
-                                        <a href="view-order.php?table_number=<?php echo $table['table_number']; ?>"
+                                        <a href="scripts/pay-order-script.php?table_number=<?php echo $table['table_number']; ?>"
                                            type="button" class="btn btn-primary">Settle bill at table</a>
-
-
                                     <?php
                                     }
+
+
+
+
+
                                 }?>
 
 

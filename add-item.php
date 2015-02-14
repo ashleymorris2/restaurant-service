@@ -34,8 +34,8 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="index.htm">Home</a></li>
                 <li class="active"><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
     </div>

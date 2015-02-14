@@ -55,8 +55,8 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="index.htm">Home</a></li>
                 <li class="active"><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
     </div>
@@ -70,12 +70,13 @@
             <li class="sidebar-brand">
                 <a href="#">Admin Panel</a>
             </li>
-            <li><a href="dashboard.php"><i class="fa fa-home" ></i> Overview</a></li>
+            <li><a href="dashboard.php"><i class="fa fa-home"></i> Overview</a></li>
             <li><a href="add-item.php"><i class="fa fa-plus-square-o"></i> Add Menu Item</a></li>
             <li><a href="menu.php"><i class="fa fa-eye"></i> View Menu</a></li>
             <li><a href="view-orders.php"><i class="fa fa-eye"></i> View Orders</a></li>
             <li><a href=edit-tables.php><i class="fa fa-pencil-square-o"></i> Edit Tables</a></li>
-            <li class="active"><a href="edit-restaurant.php"><i class="fa fa-pencil-square-o"></i> Edit Restaurant</a></li>
+            <li class="active"><a href="edit-restaurant.php"><i class="fa fa-pencil-square-o"></i> Edit Restaurant</a>
+            </li>
         </ul>
     </div>
 
@@ -100,9 +101,7 @@
                                 <strong>Success: </strong><?php echo $_GET['s']; ?>
                             </div>
                         <?php
-                        }
-
-                        else {
+                        } else {
                             if (isset($_GET['e'])) {
                                 ?>
                                 <div class="alert alert-danger alert-dismissable" role="alert">
@@ -120,7 +119,8 @@
 
                     <fieldset>
                         <legend>Restaurant Details</legend>
-                        <form class="form-horizontal" method="POST" role="form" action="scripts/edit-restaurant-script.php">
+                        <form class="form-horizontal" method="POST" role="form"
+                              action="scripts/edit-restaurant-script.php">
                             <div class="form-group">
                                 <label for="item_name" class="col-sm-2 control-label">Name:</label>
 
@@ -176,9 +176,12 @@
 
                     <fieldset>
                         <legend>Restaurant Image</legend
-                        <div class="col-sm-6">
-                            
-                            <img title="Current image" style="float: left; margin-right: 20px"  src="<?php echo $restaurant['image']; ?>" class="img-thumbnail" width="300" height="300">
+                        <div class="col-md-4">
+
+                            <!--Gets the current image from the server-->
+                            <img title="Current image" style="float: left; margin-right: 20px; margin-bottom: 20px"
+                                 src="<?php echo $restaurant['image']; ?>" class="img-thumbnail" width="300"
+                                 height="300">
 
                             <form action="img-upload.php" method="post" enctype="multipart/form-data">
                                 Select an image that represents your restaurant:
@@ -191,7 +194,8 @@
                                 </span>
                                         </span>
                                     <input type="text" class="form-control" readonly>
-                                    <input type="hidden" name="restaurant_id" value="<?php echo $restaurant['restaurant_id']; ?>">
+                                    <input type="hidden" name="restaurant_id"
+                                           value="<?php echo $restaurant['restaurant_id']; ?>">
                                 </div>
                                 <br>
                                 <input type="submit" value="Submit" name="submit" class="btn btn-success">

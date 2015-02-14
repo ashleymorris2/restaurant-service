@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard</title>
+    <title>View Orders</title>
 
     <link href="css/simple-sidebar.css" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -44,8 +44,8 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="index.htm">Home</a></li>
                 <li class="active"><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
     </div>
@@ -73,7 +73,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>View Menu</h1>
+                    <h1>View Orders</h1>
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -92,13 +92,14 @@
                             $order = array();
                             if ($response['success'] == 1) {
 
-                                $paid = "NOT PAID";
-
                                 //Iterate over every item in the item array of response
                                 foreach ($response['orders'] as $order) {
                                    if($order['payment_status'] == 2){
                                        $paid = "PAID";
                                    }
+                                    else{
+                                        $paid = "NOT PAID";
+                                    }
                                     ?>
                                     <tr>
                                         <td><?php echo $order['order_id']; ?></td>
